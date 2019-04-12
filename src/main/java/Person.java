@@ -1,3 +1,5 @@
+import java.time.Year;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Scanner;
 
@@ -8,53 +10,69 @@ public class Person {
     private String pesel;
     private Position position;
 
-    public static Person addPerson() {
-        Scanner input = new Scanner(System.in);
+    public static Person addPerson(String name, String surname, Date birthDate, String pesel, Position position) {
 
-        System.out.println("enter name ");
-        String name = input.nextLine();
-        System.out.println("enter surname");
-        String surname = input.nextLine();
         if (name.length() == 0 || surname.length() == 0) throw new NullPointerException("empty name");
 
-        System.out.println("enter pesel ");
-        String pesel = input.nextLine();
         PeselValidator p1 = new PeselValidator(pesel);
         if (!p1.isValid()) throw new NullPointerException("wrong pesel");
         System.out.println(p1.getBirthYear());
 
-        // naive and works only in 2019
-        if((2019 - p1.getBirthYear())<=18) throw new NullPointerException("you are younger than 18");
-        System.out.println("chose position \n " +
-                "1-TRAINING_MANAGER, 2-HR_ANALYST, 3-MARKETING_RESEARCH_SPECIALIST, 4-MARKETING_CONSULTANT, 5-JAVA_DEVELOPER, 6-CPP_DEVELOPER");
-        int choice = input.nextInt();
-        Person newPerson = new Person(name,surname,new Date(), pesel, Position.TRAINING_MANAGER);
-        switch (choice) {
-            case 1:
-                newPerson.position = Position.TRAINING_MANAGER;
-                break;
-            case 2:
-                newPerson.position = Position.HR_ANALYST;
-                break;
-            case 3:
-                newPerson.position = Position.MARKETING_RESEARCH_SPECIALIST;
-                break;
-            case 4:
-                newPerson.position = Position.MARKETING_CONSULTANT;
-                break;
-            case 5:
-                newPerson.position = Position.JAVA_DEVELOPER;
-                break;
-            case 6:
-                newPerson.position = Position.CPP_DEVELOPER;
-                break;
-
-            default:
-                throw new NullPointerException("bad position");
-        }
+        int year = Year.now().getValue();
+        if((year - p1.getBirthYear())<=18) throw new NullPointerException("you are younger than 18");
+        Person newPerson = new Person(name,surname, birthDate, pesel, position);
         newPerson.toString();
         return newPerson;
     }
+
+    // verify whether person can be added or not. If so then creates new Person
+//    public static Person addPerson() {
+//        Scanner input = new Scanner(System.in);
+//
+//        System.out.println("enter name ");
+//        String name = input.nextLine();
+//        System.out.println("enter surname");
+//        String surname = input.nextLine();
+//        if (name.length() == 0 || surname.length() == 0) throw new NullPointerException("empty name");
+//
+//        System.out.println("enter pesel ");
+//        String pesel = input.nextLine();
+//        PeselValidator p1 = new PeselValidator(pesel);
+//        if (!p1.isValid()) throw new NullPointerException("wrong pesel");
+//        System.out.println(p1.getBirthYear());
+//
+//        // naive and works only in 2019
+//        if((2019 - p1.getBirthYear())<=18) throw new NullPointerException("you are younger than 18");
+//        System.out.println("chose position \n " +
+//                "1-TRAINING_MANAGER, 2-HR_ANALYST, 3-MARKETING_RESEARCH_SPECIALIST, 4-MARKETING_CONSULTANT, 5-JAVA_DEVELOPER, 6-CPP_DEVELOPER");
+//        int choice = input.nextInt();
+//        Person newPerson = new Person(name,surname,new Date(), pesel, Position.TRAINING_MANAGER);
+//        switch (choice) {
+//            case 1:
+//                newPerson.position = Position.TRAINING_MANAGER;
+//                break;
+//            case 2:
+//                newPerson.position = Position.HR_ANALYST;
+//                break;
+//            case 3:
+//                newPerson.position = Position.MARKETING_RESEARCH_SPECIALIST;
+//                break;
+//            case 4:
+//                newPerson.position = Position.MARKETING_CONSULTANT;
+//                break;
+//            case 5:
+//                newPerson.position = Position.JAVA_DEVELOPER;
+//                break;
+//            case 6:
+//                newPerson.position = Position.CPP_DEVELOPER;
+//                break;
+//
+//            default:
+//                throw new NullPointerException("bad position");
+//        }
+//        newPerson.toString();
+//        return newPerson;
+//    }
 
     //for now public, cause addRandomFolks() in Department class uses this constructor
     public Person(String name, String surname, Date birthDate, String pesel, Position position) {

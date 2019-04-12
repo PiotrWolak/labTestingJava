@@ -8,13 +8,52 @@ public class Department {
     private DepartmentType departmentType;
     private List<Person> personList;
 
+    public Department(DepartmentType departmentType) {
+        this.departmentType = departmentType;
+        this.personList = new ArrayList<>();
+    }
 
+    public boolean relocateEmployee(Person p, Department d){
+        if(this.departmentType==d.departmentType){
+            if(this.personList.contains(p)){
+                d.addDude(p);
+                this.personList.remove(p);
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean isValidPerson(Person p) {
+        if (departmentType == DepartmentType.DEVELOPMENT) {
+            if (p.getPosition() == Position.JAVA_DEVELOPER || p.getPosition() == Position.CPP_DEVELOPER) {
+                return true;
+            } else return false;
+        } else if (departmentType == DepartmentType.MARKETING) {
+            if (p.getPosition() == Position.MARKETING_CONSULTANT || p.getPosition() == Position.MARKETING_RESEARCH_SPECIALIST) {
+                return true;
+            } else return false;
+        }
+        return true;
+    }
 
-    public void addRandomFolks(int n){
-        String name ;
+    public boolean addDude(Person p) {
+        if (isValidPerson(p)) {
+            personList.add(p);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean removeDude(Person p) {
+        personList.remove(p);
+        return true;
+    }
+
+    public void addRandomFolks(int n) {
+        String name;
         String pesel = "12345678910";
         PeselValidator p1 = new PeselValidator(pesel);
-        for(int i=0; i<n; i++){
+        for (int i = 0; i < n; i++) {
             Random random = new Random();
             name = "Piotrek" + random.nextInt(100);
             this.personList.add(new Person(name, "wolak", new Date(), pesel, Position.JAVA_DEVELOPER));

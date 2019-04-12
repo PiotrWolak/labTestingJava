@@ -1,13 +1,24 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Company {
     private Person CEO;
     private Person CTO;
     private Person CFO;
-    private List<Localisation> localisationList;
+    private List<Localisation> localisationList = new ArrayList<Localisation>();
 
-    public boolean addLocalisation(String localisation){
+    public int sumUpWorkers(){
+        int sum = 0;
+        for (Localisation l1: localisationList) {
+            for (Department d1: l1.getDepartmentList()) {
+                sum += d1.getPersonList().size();
+            }
+        }
+    return sum;
+    }
 
+    public boolean addLocalisation(Localisation localisation){
+        localisationList.add(localisation);
         return true;
     }
 
